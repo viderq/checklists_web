@@ -1,6 +1,6 @@
 {
-  "name": "CheckLists",
-  "short_name": "CheckLists",
+  "name": "News",
+  "short_name": "News",
   "start_url": "/checklists_web/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
