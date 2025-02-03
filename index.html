@@ -13,7 +13,7 @@
     <link rel="apple-touch-icon" href="logo_128.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-  <style>
+    <style>
         /* Базовые стили */
         * {
             margin: 0;
@@ -27,23 +27,29 @@
             background: #ffffff;
             color: #1a1a1a;
             line-height: 1.6;
+            padding-top: 140px; /* Отступ для фиксированного хедера */
         }
 
-        /* Хедер */
-        .header {
-            padding: 2rem 1.5rem 1rem;
-            border-bottom: 1px solid rgba(0,0,0,0.08);
-            background: #fff;
-            position: sticky;
+        /* Фиксированный хедер */
+        .header-container {
+            position: fixed;
             top: 0;
-            z-index: 100;
+            left: 0;
+            right: 0;
+            background: white;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .header {
+            padding: 1rem 1.5rem 0;
         }
 
         .header-title {
             font-family: 'Playfair Display', serif;
             font-size: 2.2rem;
             letter-spacing: -0.03em;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         /* Навигация */
@@ -57,6 +63,7 @@
             display: flex;
             gap: 1.5rem;
             list-style: none;
+            padding: 0 1.5rem;
         }
 
         .nav-item {
@@ -73,11 +80,30 @@
             border-color: currentColor;
         }
 
-        /* Лента новостей */
-        .main-content {
-            padding: 2rem 1.5rem;
+        /* Секции новостей */
+        .news-container {
+            position: relative;
+            overflow: hidden;
         }
 
+        .news-section {
+            display: none;
+            padding: 1.5rem;
+            transform: translateX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .news-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Карточки новостей */
         .article-card {
             background: #fff;
             border-radius: 8px;
@@ -122,11 +148,15 @@
 
         /* Адаптивность */
         @media (min-width: 768px) {
-            .header {
-                padding: 3rem 2.5rem 1.5rem;
+            body {
+                padding-top: 160px;
             }
 
-            .main-content {
+            .header {
+                padding: 1.5rem 2.5rem 0;
+            }
+
+            .news-section {
                 padding: 2.5rem;
                 max-width: 800px;
                 margin: 0 auto;
@@ -135,85 +165,116 @@
     </style>
 </head>
 <body>
-    <header class="header">
-        <h1 class="header-title">The Bulletin</h1>
-        <nav class="nav-scroll">
-            <ul class="nav-list">
-                <li class="nav-item active">Все новости</li>
-                <li class="nav-item">Политика</li>
-                <li class="nav-item">Экономика</li>
-                <li class="nav-item">Технологии</li>
-                <li class="nav-item">Культура</li>
-                <li class="nav-item">Спорт</li>
-            </ul>
-        </nav>
-    </header>
+    <div class="header-container">
+        <header class="header">
+            <h1 class="header-title">The Bulletin</h1>
+            <nav class="nav-scroll">
+                <ul class="nav-list">
+                    <li class="nav-item active">Все новости</li>
+                    <li class="nav-item">Политика</li>
+                    <li class="nav-item">Экономика</li>
+                    <li class="nav-item">Технологии</li>
+                    <li class="nav-item">Культура</li>
+                    <li class="nav-item">Спорт</li>
+                </ul>
+            </nav>
+        </header>
+    </div>
 
-    <main class="main-content">
-        <article class="article-card">
-            <div class="article-category">Политика • 2 ч назад</div>
-            <h2 class="article-title">Реформа законодательства в сфере цифровых технологий</h2>
-            <p class="article-excerpt">Правительство анонсировало новые инициативы по регулированию криптовалютного рынка и искусственного интеллекта...</p>
-            <div class="article-meta">
-                <span>Алексей Петров</span>
-                <span>•</span>
-                <span>5 мин чтения</span>
-            </div>
-        </article>
+    <div class="news-container">
+        <!-- Все новости -->
+        <div class="news-section active" data-section="all">
+            <article class="article-card">
+                <div class="article-category">Политика • 2 ч назад</div>
+                <h2 class="article-title">Реформа законодательства в сфере цифровых технологий</h2>
+                <p class="article-excerpt">Правительство анонсировало новые инициативы по регулированию криптовалютного рынка и искусственного интеллекта...</p>
+                <div class="article-meta">
+                    <span>Алексей Петров</span>
+                    <span>•</span>
+                    <span>5 мин чтения</span>
+                </div>
+            </article>
 
-        <article class="article-card">
-            <div class="article-category">Технологии • 5 ч назад</div>
-            <h2 class="article-title">Прорыв в квантовых вычислениях: новый рекорд стабильности</h2>
-            <p class="article-excerpt">Международная исследовательская группа представила квантовый процессор с рекордным временем когерентности...</p>
-            <div class="article-meta">
-                <span>Мария Семенова</span>
-                <span>•</span>
-                <span>4 мин чтения</span>
-            </div>
-        </article>
-    </main>
+            <article class="article-card">
+                <div class="article-category">Технологии • 5 ч назад</div>
+                <h2 class="article-title">Прорыв в квантовых вычислениях: новый рекорд стабильности</h2>
+                <p class="article-excerpt">Международная исследовательская группа представила квантовый процессор с рекордным временем когерентности...</p>
+                <div class="article-meta">
+                    <span>Мария Семенова</span>
+                    <span>•</span>
+                    <span>4 мин чтения</span>
+                </div>
+            </article>
+        </div>
 
-    <script>
-        // Переключение категорий
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', () => {
-                document.querySelector('.nav-item.active').classList.remove('active');
-                item.classList.add('active');
-            });
-        });
+        <!-- Остальные разделы (добавьте контент) -->
+        <div class="news-section" data-section="politics">
+            <!-- Контент для раздела Политика -->
+        </div>
 
-        // Плавный скролл для навигации
-        const navScroll = document.querySelector('.nav-scroll');
-        let isDown = false;
-        let startX;
-        let scrollLeft;
+        <div class="news-section" data-section="economy">
+            <!-- Контент для раздела Экономика -->
+        </div>
 
-        navScroll.addEventListener('mousedown', (e) => {
-            isDown = true;
-            startX = e.pageX - navScroll.offsetLeft;
-            scrollLeft = navScroll.scrollLeft;
-        });
+        <div class="news-section" data-section="technology">
+            <!-- Контент для раздела Технологии -->
+        </div>
 
-        navScroll.addEventListener('mouseleave', () => {
-            isDown = false;
-        });
+        <div class="news-section" data-section="culture">
+            <!-- Контент для раздела Культура -->
+        </div>
 
-        navScroll.addEventListener('mouseup', () => {
-            isDown = false;
-        });
-
-        navScroll.addEventListener('mousemove', (e) => {
-            if (!isDown) return;
-            e.preventDefault();
-            const x = e.pageX - navScroll.offsetLeft;
-            const walk = (x - startX) * 2;
-            navScroll.scrollLeft = scrollLeft - walk;
-        });
-
-
-    </script>
+        <div class="news-section" data-section="sport">
+            <!-- Контент для раздела Спорт -->
+        </div>
+    </div>
 
     <script>
+        // Управление разделами
+        const sections = document.querySelectorAll('.news-section');
+        const navItems = document.querySelectorAll('.nav-item');
+        let touchStartX = 0;
+        let currentSectionIndex = 0;
+
+        // Обработчики свайпа
+        document.querySelector('.news-container').addEventListener('touchstart', e => {
+            touchStartX = e.touches[0].clientX;
+        });
+
+        document.querySelector('.news-container').addEventListener('touchend', e => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const diffX = touchStartX - touchEndX;
+
+            if (Math.abs(diffX) > 50) {
+                diffX > 0 ? showNextSection() : showPrevSection();
+            }
+        });
+
+        function showSection(index) {
+            sections.forEach(section => section.classList.remove('active'));
+            navItems.forEach(item => item.classList.remove('active'));
+
+            sections[index].classList.add('active');
+            navItems[index].classList.add('active');
+            currentSectionIndex = index;
+        }
+
+        function showNextSection() {
+            const nextIndex = (currentSectionIndex + 1) % sections.length;
+            showSection(nextIndex);
+        }
+
+        function showPrevSection() {
+            const prevIndex = (currentSectionIndex - 1 + sections.length) % sections.length;
+            showSection(prevIndex);
+        }
+
+        // Обработчики клика по разделам
+        navItems.forEach((item, index) => {
+            item.addEventListener('click', () => showSection(index));
+        });
+
+        // Service Worker
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker
                 .register("/service-worker.js")
