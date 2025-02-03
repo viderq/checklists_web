@@ -27,7 +27,7 @@
             background: #ffffff;
             color: #1a1a1a;
             line-height: 1.6;
-            padding-top: 140px; /* Отступ для фиксированного хедера */
+            padding-top: 140px;
         }
 
         /* Фиксированный хедер */
@@ -73,6 +73,7 @@
             border-bottom: 2px solid transparent;
             transition: all 0.2s ease;
             white-space: nowrap;
+            cursor: pointer;
         }
 
         .nav-item.active {
@@ -84,23 +85,30 @@
         .news-container {
             position: relative;
             overflow: hidden;
+            min-height: calc(100vh - 140px);
         }
 
         .news-section {
-            display: none;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 1.5rem;
-            transform: translateX(0);
-            transition: transform 0.3s ease;
+            top: 0;
+            left: 0;
         }
 
         .news-section.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
+            transform: translateX(0);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .news-section.prev {
+            transform: translateX(-100%);
+        }
+
+        .news-section.next {
+            transform: translateX(100%);
         }
 
         /* Карточки новостей */
@@ -170,12 +178,12 @@
             <h1 class="header-title">The Bulletin</h1>
             <nav class="nav-scroll">
                 <ul class="nav-list">
-                    <li class="nav-item active">Все новости</li>
-                    <li class="nav-item">Политика</li>
-                    <li class="nav-item">Экономика</li>
-                    <li class="nav-item">Технологии</li>
-                    <li class="nav-item">Культура</li>
-                    <li class="nav-item">Спорт</li>
+                    <li class="nav-item active" data-section="all">Все новости</li>
+                    <li class="nav-item" data-section="politics">Политика</li>
+                    <li class="nav-item" data-section="economy">Экономика</li>
+                    <li class="nav-item" data-section="technology">Технологии</li>
+                    <li class="nav-item" data-section="culture">Культура</li>
+                    <li class="nav-item" data-section="sport">Спорт</li>
                 </ul>
             </nav>
         </header>
@@ -207,25 +215,57 @@
             </article>
         </div>
 
-        <!-- Остальные разделы (добавьте контент) -->
+        <!-- Политика -->
         <div class="news-section" data-section="politics">
-            <!-- Контент для раздела Политика -->
+            <article class="article-card">
+                <div class="article-category">Политика • 1 ч назад</div>
+                <h2 class="article-title">Новые дипломатические соглашения с ЕС</h2>
+                <p class="article-excerpt">Страны Евросоюза утвердили новый пакет экономических санкций...</p>
+                <div class="article-meta">
+                    <span>Иван Сидоров</span>
+                    <span>•</span>
+                    <span>3 мин чтения</span>
+                </div>
+            </article>
+
+            <article class="article-card">
+                <div class="article-category">Политика • 3 ч назад</div>
+                <h2 class="article-title">Реформа избирательной системы</h2>
+                <p class="article-excerpt">Парламент рассматривает законопроект о переходе на электронное голосование...</p>
+                <div class="article-meta">
+                    <span>Ольга Петрова</span>
+                    <span>•</span>
+                    <span>4 мин чтения</span>
+                </div>
+            </article>
+
+            <article class="article-card">
+                <div class="article-category">Политика • 5 ч назад</div>
+                <h2 class="article-title">Смена руководства МИД</h2>
+                <p class="article-excerpt">Президент объявил о назначении нового министра иностранных дел...</p>
+                <div class="article-meta">
+                    <span>Андрей Смирнов</span>
+                    <span>•</span>
+                    <span>2 мин чтения</span>
+                </div>
+            </article>
         </div>
 
+        <!-- Остальные разделы -->
         <div class="news-section" data-section="economy">
-            <!-- Контент для раздела Экономика -->
+            <!-- Контент для Экономики -->
         </div>
 
         <div class="news-section" data-section="technology">
-            <!-- Контент для раздела Технологии -->
+            <!-- Контент для Технологий -->
         </div>
 
         <div class="news-section" data-section="culture">
-            <!-- Контент для раздела Культура -->
+            <!-- Контент для Культуры -->
         </div>
 
         <div class="news-section" data-section="sport">
-            <!-- Контент для раздела Спорт -->
+            <!-- Контент для Спорта -->
         </div>
     </div>
 
@@ -235,43 +275,57 @@
         const navItems = document.querySelectorAll('.nav-item');
         let touchStartX = 0;
         let currentSectionIndex = 0;
+        let isAnimating = false;
 
         // Обработчики свайпа
         document.querySelector('.news-container').addEventListener('touchstart', e => {
+            if (currentSectionIndex !== 0 || isAnimating) return;
             touchStartX = e.touches[0].clientX;
         });
 
         document.querySelector('.news-container').addEventListener('touchend', e => {
+            if (currentSectionIndex !== 0 || isAnimating) return;
+
             const touchEndX = e.changedTouches[0].clientX;
             const diffX = touchStartX - touchEndX;
 
             if (Math.abs(diffX) > 50) {
-                diffX > 0 ? showNextSection() : showPrevSection();
+                const direction = diffX > 0 ? 'next' : 'prev';
+                const newIndex = direction === 'next' ? 1 : sections.length - 1;
+                showSection(newIndex, direction);
             }
         });
 
-        function showSection(index) {
-            sections.forEach(section => section.classList.remove('active'));
-            navItems.forEach(item => item.classList.remove('active'));
+        // Функция переключения разделов
+        function showSection(index, direction) {
+            if (isAnimating || index < 0 || index >= sections.length) return;
 
-            sections[index].classList.add('active');
-            navItems[index].classList.add('active');
-            currentSectionIndex = index;
-        }
+            isAnimating = true;
+            const currentSection = sections[currentSectionIndex];
+            const newSection = sections[index];
 
-        function showNextSection() {
-            const nextIndex = (currentSectionIndex + 1) % sections.length;
-            showSection(nextIndex);
-        }
+            currentSection.classList.add(direction);
+            newSection.classList.add('active', direction === 'next' ? 'next' : 'prev');
 
-        function showPrevSection() {
-            const prevIndex = (currentSectionIndex - 1 + sections.length) % sections.length;
-            showSection(prevIndex);
+            setTimeout(() => {
+                currentSection.classList.remove('active', 'prev', 'next');
+                newSection.classList.remove('prev', 'next');
+                currentSectionIndex = index;
+                isAnimating = false;
+
+                navItems.forEach(item => item.classList.remove('active'));
+                navItems[index].classList.add('active');
+            }, 300);
         }
 
         // Обработчики клика по разделам
         navItems.forEach((item, index) => {
-            item.addEventListener('click', () => showSection(index));
+            item.addEventListener('click', () => {
+                if (index === currentSectionIndex || isAnimating) return;
+
+                const direction = index > currentSectionIndex ? 'next' : 'prev';
+                showSection(index, direction);
+            });
         });
 
         // Service Worker
