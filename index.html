@@ -2,61 +2,85 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>News Minimal</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#ffffff">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="apple-touch-icon" href="logo_128.png">
-    <link rel="stylesheet" href="styles.css">
-    <script defer src="scripts.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css"> <!-- Подключение внешнего CSS файла -->
 </head>
 <body>
-    <div class="header-container">
-        <header class="header">
-            <h1 class="header-title">The Bulletin</h1>
-            <nav class="nav-scroll">
-                <ul class="nav-list">
-                    <li class="nav-item active" data-section="all">Все новости</li>
-                    <li class="nav-item" data-section="politics">Политика</li>
-                    <li class="nav-item" data-section="economy">Экономика</li>
-                    <li class="nav-item" data-section="technology">Технологии</li>
-                    <li class="nav-item" data-section="culture">Культура</li>
-                    <li class="nav-item" data-section="sport">Спорт</li>
-                </ul>
-            </nav>
-        </header>
-    </div>
+    <header class="header">
+        <h1 class="header-title">The Bulletin</h1>
+        <nav class="nav-scroll">
+            <ul class="nav-list">
+                <li class="nav-item active">Все новости</li>
+                <li class="nav-item">Политика</li>
+                <li class="nav-item">Экономика</li>
+                <li class="nav-item">Технологии</li>
+                <li class="nav-item">Культура</li>
+                <li class="nav-item">Спорт</li>
+            </ul>
+        </nav>
+    </header>
 
-    <div class="news-container">
-        <div class="news-section active" data-section="all">
-            <article class="article-card">
-                <div class="article-category">Политика • 2 ч назад</div>
-                <h2 class="article-title">Реформа законодательства в сфере цифровых технологий</h2>
-                <p class="article-excerpt">Правительство анонсировало новые инициативы...</p>
-                <div class="article-meta">
-                    <span>Алексей Петров</span> • <span>5 мин чтения</span>
-                </div>
-            </article>
-        </div>
+    <main class="main-content">
+        <article class="article-card">
+            <div class="article-category">Политика • 2 ч назад</div>
+            <h2 class="article-title">Реформа законодательства в сфере цифровых технологий</h2><p class="article-excerpt">Правительство анонсировало новые инициативы по регулированию криптовалютного рынка и искусственного интеллекта...</p>
+            <div class="article-meta">
+                <span>Алексей Петров</span>
+                <span>•</span>
+                <span>5 мин чтения</span>
+            </div>
+        </article>
 
-        <div class="news-section" data-section="politics">
-            <article class="article-card">
-                <div class="article-category">Политика • 1 ч назад</div>
-                <h2 class="article-title">Новые дипломатические соглашения с ЕС</h2>
-                <p class="article-excerpt">Страны Евросоюза утвердили новый пакет санкций...</p>
-                <div class="article-meta">
-                    <span>Иван Сидоров</span> • <span>3 мин чтения</span>
-                </div>
-            </article>
-        </div>
+        <article class="article-card">
+            <div class="article-category">Технологии • 5 ч назад</div>
+            <h2 class="article-title">Прорыв в квантовых вычислениях: новый рекорд стабильности</h2>
+            <p class="article-excerpt">Международная исследовательская группа представила квантовый процессор с рекордным временем когерентности...</p>
+            <div class="article-meta">
+                <span>Мария Семенова</span>
+                <span>•</span>
+                <span>4 мин чтения</span>
+            </div>
+        </article>
+    </main>
 
-        <div class="news-section" data-section="economy"></div>
-        <div class="news-section" data-section="technology"></div>
-        <div class="news-section" data-section="culture"></div>
-        <div class="news-section" data-section="sport"></div>
-    </div>
+    <script>
+        // Переключение категорий
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelector('.nav-item.active').classList.remove('active');
+                item.classList.add('active');
+            });
+        });
+
+        // Плавный скролл для навигации
+        const navScroll = document.querySelector('.nav-scroll');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        navScroll.addEventListener('mousedown', (e) => {
+            isDown = true;
+            startX = e.pageX - navScroll.offsetLeft;
+            scrollLeft = navScroll.scrollLeft;
+        });
+
+        navScroll.addEventListener('mouseleave', () => {
+            isDown = false;
+        });
+
+        navScroll.addEventListener('mouseup', () => {
+            isDown = false;
+        });
+
+        navScroll.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - navScroll.offsetLeft;
+            const walk = (x - startX) * 2;
+            navScroll.scrollLeft = scrollLeft - walk;
+        });
+    </script>
 </body>
 </html>
