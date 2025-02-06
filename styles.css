@@ -1,32 +1,26 @@
-/* Базовые стили */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    -webkit-font-smoothing: antialiased;
+/* Отключение скролла */
+html, body {
+    overflow: hidden;
+    height: 100%;
 }
 
-body {
-    font-family: 'Inter', sans-serif;
-    background: #fafafa;
-    color: #1a1a1a;
-    line-height: 1.6;
+/* Скрываем ползунки */
+.nav-scroll {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    overflow-x: hidden;
 }
 
-/* Хедер */
+/* Шапка занимает всё пространство сверху и скрывает элементы за собой */
 .header {
-    padding: 2rem 1.5rem 1rem;
-    border-bottom: 1px solid rgba(0,0,0,0.08);
-    background: #fff;
-    position: sticky;
+    position: fixed;
+    width: 100%;
+    height: auto;
     top: 0;
+    left: 0;
+    background: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 100;
-    transition: all 0.3s ease-in-out;
-}
-
-.header.shrunk {
-    padding: 1rem 1.5rem 0.5rem;
-    transform: translateY(-10px);
 }
 
 /* Заголовок */
@@ -38,22 +32,12 @@ body {
     transition: all 0.3s ease-in-out;
 }
 
-.header.shrunk .header-title {
-    font-size: 1.1rem;
-    transform: translateY(-10px);
-}
-
 /* Навигация */
-.nav-scroll {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 0.5rem;
-}
-
 .nav-list {
     display: flex;
     gap: 1.5rem;
     list-style: none;
+    white-space: nowrap;
 }
 
 .nav-item {
@@ -62,7 +46,6 @@ body {
     padding: 0.4rem 0;
     border-bottom: 2px solid transparent;
     transition: all 0.2s ease;
-    white-space: nowrap;
 }
 
 .nav-item.active {
@@ -72,7 +55,8 @@ body {
 
 /* Лента новостей */
 .main-content {
-    padding: 2rem 1.5rem;
+    padding: 7rem 1.5rem 2rem;
+    overflow: hidden;
 }
 
 .article-card {
@@ -86,50 +70,4 @@ body {
 
 .article-card:hover {
     transform: translateY(-2px);
-}
-
-.article-category {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #888;
-    margin-bottom: 0.8rem;
-}
-
-.article-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.4rem;
-    margin-bottom: 0.8rem;
-    line-height: 1.3;
-}
-
-.article-excerpt {
-    font-size: 0.95rem;
-    color: #444;
-    margin-bottom: 1rem;
-}
-
-.article-meta {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    font-size: 0.85rem;
-    color: #666;
-}
-
-/* Адаптивность */
-@media (min-width: 768px) {
-    .header {
-        padding: 3rem 2.5rem 1.5rem;
-    }
-
-    .header.shrunk {
-        padding: 1.5rem 2.5rem 0.8rem;
-    }
-
-    .main-content {
-        padding: 2.5rem;
-        max-width: 800px;
-        margin: 0 auto;
-    }
 }
