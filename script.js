@@ -53,3 +53,5 @@ window.addEventListener('scroll', () => {
     
     lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; // Не позволяем значению быть отрицательным
 });
+
+//Добавь условие исчезания новостных карточке после пересечения нижней границы заголовка
