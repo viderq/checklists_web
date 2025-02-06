@@ -29,29 +29,18 @@ navScroll.addEventListener('mousemove', (e) => {
     navScroll.scrollLeft = scrollLeft - walk;
 });
 
-// Анимация заголовка при скролле карточек
+// Анимация заголовка при скролле
 const header = document.querySelector('.header');
-const headerTitle = document.querySelector('.header-title');
 let lastScrollTop = 0;
-const headerMinHeight = 50;  // Минимальная высота заголовка (в пикселях)
-const headerMaxHeight = 140; // Исходная высота заголовка
 
 window.addEventListener('scroll', () => {
     const currentScroll = window.scrollY;
     
     if (currentScroll > lastScrollTop) {
-        // Скроллим вниз – уменьшаем заголовок
-        header.style.height = `${headerMinHeight}px`;
-        headerTitle.style.transform = 'translateY(-50%) scale(0.5)';
-        headerTitle.style.top = '50%';
+        header.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.2)';
     } else {
-        // Скроллим вверх – восстанавливаем заголовок
-        header.style.height = `${headerMaxHeight}px`;
-        headerTitle.style.transform = 'translateY(0) scale(1)';
-        headerTitle.style.top = 'auto';
+        header.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
     }
     
-    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; // Не позволяем значению быть отрицательным
+    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
 });
-
-//Добавь условие исчезания новостных карточке после пересечения нижней границы заголовка
