@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>News Minimal</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css"> <!-- Подключение внешнего CSS файла -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header class="header">
@@ -25,7 +25,8 @@
     <main class="main-content">
         <article class="article-card">
             <div class="article-category">Политика • 2 ч назад</div>
-            <h2 class="article-title">Реформа законодательства в сфере цифровых технологий</h2><p class="article-excerpt">Правительство анонсировало новые инициативы по регулированию криптовалютного рынка и искусственного интеллекта...</p>
+            <h2 class="article-title">Реформа законодательства в сфере цифровых технологий</h2>
+            <p class="article-excerpt">Правительство анонсировало новые инициативы по регулированию криптовалютного рынка и искусственного интеллекта...</p>
             <div class="article-meta">
                 <span>Алексей Петров</span>
                 <span>•</span>
@@ -45,42 +46,6 @@
         </article>
     </main>
 
-    <script>
-        // Переключение категорий
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', () => {
-                document.querySelector('.nav-item.active').classList.remove('active');
-                item.classList.add('active');
-            });
-        });
-
-        // Плавный скролл для навигации
-        const navScroll = document.querySelector('.nav-scroll');
-        let isDown = false;
-        let startX;
-        let scrollLeft;
-
-        navScroll.addEventListener('mousedown', (e) => {
-            isDown = true;
-            startX = e.pageX - navScroll.offsetLeft;
-            scrollLeft = navScroll.scrollLeft;
-        });
-
-        navScroll.addEventListener('mouseleave', () => {
-            isDown = false;
-        });
-
-        navScroll.addEventListener('mouseup', () => {
-            isDown = false;
-        });
-
-        navScroll.addEventListener('mousemove', (e) => {
-            if (!isDown) return;
-            e.preventDefault();
-            const x = e.pageX - navScroll.offsetLeft;
-            const walk = (x - startX) * 2;
-            navScroll.scrollLeft = scrollLeft - walk;
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
