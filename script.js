@@ -28,19 +28,3 @@ navScroll.addEventListener('mousemove', (e) => {
     const walk = (x - startX) * 2;
     navScroll.scrollLeft = scrollLeft - walk;
 });
-
-// Анимация заголовка при скролле
-const header = document.querySelector('.header');
-let lastScrollTop = 0;
-
-window.addEventListener('scroll', () => {
-    const currentScroll = window.scrollY;
-    
-    if (currentScroll > lastScrollTop) {
-        header.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.2)';
-    } else {
-        header.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
-    }
-    
-    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
-});
